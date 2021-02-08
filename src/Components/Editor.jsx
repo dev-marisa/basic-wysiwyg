@@ -1,19 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
+import LineNumbers from './LineNumbers';
 
+const getLength = raw => raw.split(/\r\n|\r|\n/).length;
 
 const Editor = props => {
 
+  const [rows, setRows] = useState(1);
+
   const onInput = e => {
-    console.log(e.target.value);
+    setRows(getLength(e.target.value));
     props.editing(e.target.value);
   }
 
   return (
     <div>
       <h1>Editor</h1>
-      <form>
-        <textarea onChange={ onInput } className="editor"></textarea>
-      </form>
+      <div className="row">
+        <div className="col-sm">
+          <LineNumbers max={rows} />
+        </div>
+        <div className="col">
+          <form>
+            <textarea onChange={ onInput } className="editor" rows={rows} />
+          </form>
+        </div>
+      </div>
     </div>
   );
 

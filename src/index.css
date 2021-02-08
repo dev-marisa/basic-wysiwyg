@@ -4,6 +4,18 @@
 
 .col {
     flex: 1;
+    margin: 0 10px;
+}
+
+.lineNumber, .editor {
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+}
+
+.lineNumber {
+    margin-right: 10px;
+    text-align: right;
 }
 
 .editor {
