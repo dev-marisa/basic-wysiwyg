@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .row {
     display: flex;
 }
@@ -7,19 +13,47 @@
     margin: 0 10px;
 }
 
-.lineNumber, .editor {
+.lineNumber, .editor, #code {
     font-family: monospace;
-    margin: 0;
-    padding: 0;
+    font-size: 1rem;
 }
 
 .lineNumber {
-    margin-right: 10px;
     text-align: right;
 }
 
+.p10 {
+    padding: 10px;
+}
+
 .editor {
-    box-sizing: border-box;
     width: 100%;
     resize: none;
+    padding: 10px;
+    background-color: #f3f3f3;
+    border: none;
+}
+
+#code {
+    width: 100%;
+    resize: none;
+    padding: 10px;
+    background-color: #f3f3f3;
+    border: none;
+    white-space: pre;
+}
+
+.btn {
+    background-color: dodgerblue;
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.btn:disabled {
+    opacity: .5;
 }

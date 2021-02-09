@@ -16,7 +16,7 @@ const Editor = props => {
     <div>
       <h1>Editor</h1>
       <div className="row">
-        <div className="col-sm">
+        <div className="col-sm p10">
           <LineNumbers max={rows} />
         </div>
         <div className="col">

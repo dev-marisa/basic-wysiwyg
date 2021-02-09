@@ -4,6 +4,7 @@ import mdToHTML from '../Parser/mdToHTML';
 const Viewer = props => {
 
   const [html, setHtml] = useState("");
+  const [showCode, setShowCode] = useState(false);
 
   useEffect( () => {
     setHtml(mdToHTML(props.code));
@@ -11,8 +12,24 @@ const Viewer = props => {
 
   return (
     <div>
-      <h1>Viewer</h1>
-      <div id="preview" dangerouslySetInnerHTML={{__html: html}} />
+      <button 
+        onClick={ e => setShowCode(true) }
+        disabled={showCode}
+        className="btn"
+      >
+        Code
+      </button>
+      <button 
+        onClick={ e => setShowCode(false) }
+        disabled={!showCode}
+        className="btn"
+      >
+        Preview
+      </button>
+      { showCode ? <div id="code">{html}</div> : 
+      <div id="preview" dangerouslySetInnerHTML={{__html: html}} /> }
+      
+      
     </div>
   );
 
