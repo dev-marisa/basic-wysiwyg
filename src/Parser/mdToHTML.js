@@ -1,4 +1,4 @@
-import patterns from './rules';
+import {fullLinePatterns, innerPatterns} from './rules';
 let inList = false;
 
 // TODO - rebuild the working code into a linked list
@@ -11,21 +11,30 @@ const splitLines = raw => raw.split(/\r\n|\r|\n/);
 function mdToHTML(rawCode) {
 
     let result = "";
+    const working = [];
 
     console.log(splitLines(rawCode));
 
     for(let line of splitLines(rawCode)) {
-        let match = false;
-        for(let pattern of patterns) {
+        for(let pattern of fullLinePatterns) {
             if(pattern.re.test(line)) {
-                match = true;
-                result += pattern.fx(line);
+                // result += pattern.fx(line);
+                working.push(pattern.fx(line));
                 break;
             }
         }
-        if(!match) {
-            result += `<p>${line}</p>\n`;
+    }
+
+    // let's identify more patterns inside
+    for(let line of working) {
+        for(let pattern of innerPatterns) {
+            if(pattern.re.test(line)) {
+                console.log(pattern.tag, line);
+                line = pattern.fx(line);
+                // break;
+            }
         }
+        result += line;
     }
 
     return result;

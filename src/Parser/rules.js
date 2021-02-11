@@ -1,4 +1,5 @@
-const patterns = [
+// full line patterns
+export const fullLinePatterns = [
     {
         tag: "h1",
         re: /(#{1} ).*/, 
@@ -30,48 +31,89 @@ const patterns = [
         fx: t => "<h6>"+/(?<=(#{6} )).*/.exec(t)[0]+"</h6>"
     },
     {
+        tag: "li",
+        re: /^(\* ).*$/,
+        fx: t => `<li>${t.substring(2)}</li>`
+    },
+    {
+        tag: "tr",
+        re: /^\|[^-*]*(.*\|)+\s*$/,
+        fx: t => `<tr><td>TODO</td></tr>`
+    },
+    {
+        tag: "p",
+        re: /./,
+        fx: t => `<p>${t}</p>`
+    }
+];
+
+// add tags into a string
+function addTags(line, toMatch, open, close) {
+    let result = "";
+    let started = false;
+    for(let i=0; i<line.length; i++) {
+        if(line.substring(i, i+toMatch.length) === toMatch) {
+            if(started) {
+                result += close;
+            } else {
+                result += open;
+            }
+            started = !started;
+            i += toMatch.length-1;
+        } else {
+            result += line[i];
+        }
+    }
+    if(started) {
+        result += close;
+    }
+    return result;
+}
+
+export const innerPatterns = [
+    {
         tag: "a",
-        re: /\[.*\]\(\".*\"\)/, 
+        re: /\[.*\]\(".*"\)/, 
         fx: t => {
-        let text = /\[(.*?)\]/.exec(t)[1];
-        let href = /\("(.*?)"\)/.exec(t)[1];
-        return `<a href="${href}">${text}</a>`;
+            let text = /\[(.*?)\]/.exec(t)[1];
+            let href = /\("(.*?)"\)/.exec(t)[1];
+            // this should do a find and replace probably
+            return `<a href="${href}">${text}</a>`;
         }
     },
     {
         tag: "strong",
         re: /\*\*.*\*\*/,
-        fx: t => "<strong>TODO</strong>"
+        fx: t => addTags(t, "**", "<strong>", "</strong>")
     },
     {
         tag: "strong",
         re: /__.*__/,
-        fx: t => "<strong>TODO</strong>"
+        fx: t => addTags(t, "__", "<strong>", "</strong>")
     },
     {
         tag: "em",
         re: /\*.*\*/,
-        fx: t => "<em>TODO</em>"
+        fx: t => addTags(t, "*", "<em>", "</em>")
     },
     {
         tag: "em",
         re: /_.*_/,
-        fx: t => "<em>TODO</em>"
-    },
-    {
-        tag: "del",
-        re: /~.*~/,
-        fx: t => "<del>TODO</del>"
+        fx: t => addTags(t, "_", "<em>", "</em>")
     },
     {
         tag: "del",
         re: /~~.*~~/,
-        fx: t => "<del>TODO</del>"
+        fx: t => addTags(t, "~~", "<del>", "</del>")
     },
-];
+    {
+        tag: "del",
+        re: /~.*~/,
+        fx: t => addTags(t, "~", "<del>", "</del>")
+    },
+]
 
 // TODO - identify lists and deal with them somehow
 // TODO - a, strong, em, del should all be allowed inside of other tags...
 // TODO - should ins tag (underline) be included? 
-
-export default patterns;
+// TODO - will have to read back through the doc to find code blocks

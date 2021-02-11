@@ -20,9 +20,12 @@ const Editor = props => {
           <LineNumbers max={rows} />
         </div>
         <div className="col">
-          <form>
-            <textarea onChange={ onInput } className="editor" rows={rows} />
-          </form>
+          <textarea 
+            onChange={ onInput } 
+            className="editor" 
+            rows={rows} 
+            autoFocus
+          />
         </div>
       </div>
     </div>
